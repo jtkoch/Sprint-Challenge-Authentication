@@ -6,20 +6,6 @@ const jwt = require('jsonwebtoken');
 const Users = require('../users/users-model');
 const secrets = require('../config/secret');
 
-//function to generate tokens for the client
-function generateToken(user) {
-  //the data
-  const payload = {
-    userId: user.id,
-    username: user.username,
-  };
-  const secret = secrets.jwtSecret;
-  const options = {
-    expiresIn: '1d',
-  };
-  return jwt.sign(payload, secret, options);
-}
-
 /** ENDPOINTS */
 
 //Register User
@@ -74,5 +60,19 @@ router.post('/login', (req, res) => {
     });
 });
 
-//export
+//function to generate tokens for the client
+function generateToken(user) {
+  //the data
+  const payload = {
+    userId: user.id,
+    username: user.username,
+  };
+  const options = {
+    expiresIn: '1d',
+  };
+  const token = jwt.sign(payload, secrets.jwtSecret, options);
+
+  return token;
+}
+
 module.exports = router;
